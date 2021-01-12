@@ -18,3 +18,12 @@
 
 ;; set operations, over lists: intersection set-difference union set-exclusive-or
 ;; https://lispcookbook.github.io/cl-cookbook/data-structures.html#set
+;; (remove-duplicates '("foo" "foo" "bar") :test #'string-equal)
+
+;; (uiop:read-file-string "file.txt")
+;; (uiop:read-file-lines "file.txt")
+
+;; https://github.com/rpgoldman/xmls
+
+
+;; (length (remove-if-not (lambda (item) (search "to-be-found" (alexandria:assoc-value item "A-Key" :test #'equal))) *some-list-of-data*))
