@@ -22,8 +22,24 @@
 
 ;; (uiop:read-file-string "file.txt")
 ;; (uiop:read-file-lines "file.txt")
+;; (alexandria:write-string-into-file content "file.txt")
 
 ;; https://github.com/rpgoldman/xmls
 
 
 ;; (length (remove-if-not (lambda (item) (search "to-be-found" (alexandria:assoc-value item "A-Key" :test #'equal))) *some-list-of-data*))
+
+
+;; substrings
+;; lower("ABC") in lower("some big abc string")
+;; char= is case sensitive
+;; (search "ABC" "kjfauiabckdjflkj" :test #'char-equal)
+
+;; capture strings that match regex
+;; (ppcre:scan-to-strings "token=.*?," input-string)
+;; --see also split-string above--
+
+
+;; files & dirs
+;; os.listdir(".")
+;; (uiop:directory-files "./")
