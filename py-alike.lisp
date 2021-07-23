@@ -9,6 +9,34 @@
 (defun list-to-clip (a-list)
   (trivial-clipboard:text (format nil "~{~A~%~}" a-list)))
 
+
+(defgeneric deep-copy (an-object)
+  (:documentation
+   "My limited, incomplete, but useful to me, version of copy.deepcopy()"))
+
+(defmethod deep-copy ((an-object hash-table))
+  "For hashtables, we create a shallow copy with Alexandria, then iterate
+and call deep-copy on each value in the new table."
+  (alexandria:copy-hash-table an-object :key #'deep-copy))
+
+(defmethod deep-copy ((an-object vector))
+  (coerce (loop for element across an-object
+                collect (deep-copy element))
+          'vector))
+
+(defmethod deep-copy ((an-object string))
+  "New string returned."
+  (format nil "~a" an-object))
+
+(defmethod deep-copy ((an-object list))
+  "Walk list and deep-copy each element. Put them in a new list. "
+  (mapcar #'deep-copy an-object))
+
+(defmethod deep-copy ((an-object t))
+  "Everything else: return as is. At least for now...
+NOTE: All objects inherit from t."
+  an-object)
+
 ;; (uiop:getenv "HOME")
 ;; (uiop:run-program (list "firefox" "http:url")) - sync
 ;; (uiop:run-program "ls" :output *standard-output*) - print output

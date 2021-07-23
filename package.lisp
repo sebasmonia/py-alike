@@ -9,6 +9,7 @@
   (:import-from :trivial-clipboard)
   (:import-from :py-configparser)
   (:export
+   #:deep-copy
    #:clip-to-list
    #:list-to-clip))
 
