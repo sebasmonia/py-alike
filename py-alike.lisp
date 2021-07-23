@@ -37,6 +37,12 @@ and call deep-copy on each value in the new table."
 NOTE: All objects inherit from t."
   an-object)
 
+(defun print-as-json (some-object)
+  "Uses shasht to output pretty-printed JSON.
+Seems that Jonathan doesn't support this."
+  (format t "~a" (shasht:write-json some-object  nil)))
+
+
 ;; (uiop:getenv "HOME")
 ;; (uiop:run-program (list "firefox" "http:url")) - sync
 ;; (uiop:run-program "ls" :output *standard-output*) - print output
@@ -57,7 +63,6 @@ NOTE: All objects inherit from t."
 
 ;; (length (remove-if-not (lambda (item) (search "to-be-found" (alexandria:assoc-value item "A-Key" :test #'equal))) *some-list-of-data*))
 
-
 ;; substrings
 ;; lower("ABC") in lower("some big abc string")
 ;; char= is case sensitive
@@ -66,7 +71,6 @@ NOTE: All objects inherit from t."
 ;; capture strings that match regex
 ;; (ppcre:scan-to-strings "token=.*?," input-string)
 ;; --see also split-string above--
-
 
 ;; files & dirs
 ;; os.listdir(".")

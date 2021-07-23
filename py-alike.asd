@@ -8,7 +8,7 @@
   :serial t
   :depends-on (#:alexandria
                #:uiop
-               #:yason
+               #:shasht
                #:trivial-clipboard
                #:py-configparser)
   :components ((:file "package")

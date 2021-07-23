@@ -5,11 +5,12 @@
   (:use #:common-lisp #:uiop)
   (:import-from :alexandria)
   (:import-from :uiop)
-  (:import-from :yason)
+  (:import-from :shasht)
   (:import-from :trivial-clipboard)
   (:import-from :py-configparser)
   (:export
    #:deep-copy
+   #:print-as-json
    #:clip-to-list
    #:list-to-clip))
 
