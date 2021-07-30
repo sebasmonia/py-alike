@@ -42,6 +42,12 @@ NOTE: All objects inherit from t."
 Seems that Jonathan doesn't support this."
   (format t "~a" (shasht:write-json some-object  nil)))
 
+(defun to-adjustable-vector (fixed-vector)
+  "Converts a fixed vector (usually from py4cl) to an adjustable vector."
+  ;; see https://stackoverflow.com/a/41772190/91877 for the original setup
+  (let ((adjustable-vector (make-array (length fixed-vector) :adjustable t)))
+    (map-into adjustable-vector #'identity fixed-vector)))
+
 
 ;; (uiop:getenv "HOME")
 ;; (uiop:run-program (list "firefox" "http:url")) - sync

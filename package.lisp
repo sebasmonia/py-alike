@@ -10,6 +10,7 @@
   (:import-from :py-configparser)
   (:export
    #:deep-copy
+   #:to-adjustable-vector
    #:print-as-json
    #:clip-to-list
    #:list-to-clip))
