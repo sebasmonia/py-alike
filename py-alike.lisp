@@ -3,12 +3,44 @@
 (in-package #:py-alike)
 
 (defun clip-to-list ()
+  "Read from the clipboard a list of lines."
   (mapcar (lambda (a-str) (string-trim " " a-str))
           (uiop:split-string (trivial-clipboard:text) :separator '(#\Newline))))
 
 (defun list-to-clip (a-list)
+  "Send to the clipboard a list of strings as a single chunk of text."
   (trivial-clipboard:text (format nil "~{~A~%~}" a-list)))
 
+(defun counter (sequence &key (test #'equal) (key #'identity))
+  "Python's Counter, a bit less featurefull of course."
+  (let ((counting-table (make-hash-table :test test))) ;; use the same test that we'll use to compare
+    ;; coerce in case sequence is a vector. Probs defgeneric would be better?
+    (loop for elem in (coerce sequence 'list)
+          do (incf (gethash (funcall key elem) counting-table 0))
+          finally (return (values counting-table
+                                  (counter-most-common counting-table))))))
+
+(defun counter-most-common (counter-ht &optional (how-many 3))
+  "Python's most_common from Counter."
+  ;; Quite inefficient, but I'm not counting millions of items anyway
+  (let ((counts-only (sort (loop for v being the hash-values of counter-ht collect v)
+                           #'>))
+        (test-func (hash-table-test counter-ht))
+        (output-alist nil))
+    ;; from the # of counts, get only as many items as we need to fulfill how-many
+    ;; and also reverse the list so that output-alist is correctly sorted
+    ;; (I could also nreverse the alist- I think)
+    (loop for count in (nreverse (subseq counts-only
+                                         0
+                                         (min how-many (length counts-only))))
+          do (loop for item-key being the hash-key
+                     using (hash-value item-count) of counter-ht
+                   if (and (= count item-count)
+                           (not (assoc item-key output-alist :test test-func)))
+                     do
+                        (push (cons item-key item-count) output-alist)
+                        (loop-finish))
+          finally (return output-alist))))
 
 (defgeneric deep-copy (an-object)
   (:documentation
