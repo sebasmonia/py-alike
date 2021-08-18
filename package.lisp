@@ -10,6 +10,8 @@
   (:import-from :py-configparser)
   (:export
    #:deep-copy
+   #:counter
+   #:counter-most-common
    #:to-adjustable-vector
    #:print-as-json
    #:clip-to-list

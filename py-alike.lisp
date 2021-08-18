@@ -20,7 +20,7 @@
           finally (return (values counting-table
                                   (counter-most-common counting-table))))))
 
-(defun counter-most-common (counter-ht &optional (how-many 3))
+(defun counter-most-common-original-and-ugly (counter-ht &optional (how-many 3))
   "Python's most_common from Counter."
   ;; Quite inefficient, but I'm not counting millions of items anyway
   (let ((counts-only (sort (loop for v being the hash-values of counter-ht collect v)
@@ -41,6 +41,14 @@
                         (push (cons item-key item-count) output-alist)
                         (loop-finish))
           finally (return output-alist))))
+
+(defun counter-most-common (counter-ht &optional (how-many 3))
+  "See https://www.reddit.com/r/lisp/comments/p6kdtc/-/h9dpmaw for original source."
+  (let ((l 0)
+        (x ()))
+    (maphash (lambda (k v) (incf l) (push (cons k v) x)) counter-ht)
+    (subseq (sort x #'> :key #'cdr)
+            0 (min l how-many))))
 
 (defgeneric deep-copy (an-object)
   (:documentation
@@ -79,7 +87,6 @@ Seems that Jonathan doesn't support this."
   ;; see https://stackoverflow.com/a/41772190/91877 for the original setup
   (let ((adjustable-vector (make-array (length fixed-vector) :adjustable t)))
     (map-into adjustable-vector #'identity fixed-vector)))
-
 
 ;; (uiop:getenv "HOME")
 ;; (uiop:run-program (list "firefox" "http:url")) - sync
