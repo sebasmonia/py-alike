@@ -42,13 +42,22 @@
                         (loop-finish))
           finally (return output-alist))))
 
-(defun counter-most-common (counter-ht &optional (how-many 3))
+(defun counter-most-common-v2 (counter-ht &optional (how-many 3))
   "See https://www.reddit.com/r/lisp/comments/p6kdtc/-/h9dpmaw for original source."
   (let ((l 0)
         (x ()))
     (maphash (lambda (k v) (incf l) (push (cons k v) x)) counter-ht)
     (subseq (sort x #'> :key #'cdr)
             0 (min l how-many))))
+
+(defun counter-most-common (counter-ht  &optional (how-many 3))
+  "See https://www.reddit.com/r/lisp/comments/p6kdtc/-/h9fdbuy for original source.
+Modified w/min from v2."
+  (let ((counter-as-alist (alexandria:hash-table-alist counter)))
+    (subseq (sort counter-as-alist
+                  #'>
+                  :key #'cdr)
+            0 (min (length counter-as-alist) how-many))))
 
 (defgeneric deep-copy (an-object)
   (:documentation
