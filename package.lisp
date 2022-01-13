@@ -15,6 +15,8 @@
    #:to-adjustable-vector
    #:print-as-json
    #:clip-to-list
-   #:list-to-clip))
+   #:list-to-clip
+   #:naive-pickle
+   #:naive-unpickle))
 
 (in-package #:py-alike)
