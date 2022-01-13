@@ -97,6 +97,23 @@ Seems that Jonathan doesn't support this."
   (let ((adjustable-vector (make-array (length fixed-vector) :adjustable t)))
     (map-into adjustable-vector #'identity fixed-vector)))
 
+
+;; these pair come https://gigamonkeys.com/book/practical-a-simple-database.html
+;; and they are extremely unsafe and inefficient
+(defun naive-pickle (filename data)
+  "Serialize as text DATA in FILENAME."
+  (with-open-file (out filename
+                       :direction :output
+                       :if-exists :supersede)
+    (with-standard-io-syntax
+      (print data out))))
+
+(defun naive-unpickle (filename)
+  "Read back and return FILENAME, which contains `naive-pickle'd data."
+  (with-open-file (in filename)
+    (with-standard-io-syntax
+      (read in))))
+
 ;; (uiop:getenv "HOME")
 ;; (uiop:run-program (list "firefox" "http:url")) - sync
 ;; (uiop:run-program "ls" :output *standard-output*) - print output
